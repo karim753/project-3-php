@@ -5,32 +5,47 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
+    display: flex;
+    height: 100vh;
     background-color: #f4f4f4;
+}
+
+.left-section {
+    flex: 1.5;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    margin: 0;
+    background-color: black;
 }
 
-.container {
-    background-color: white;
+.logo {
+    max-width: 40%;
+    height: auto;
+}
+
+.right-section {
+    flex: 1;
+    background-color: black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 400px;
-    text-align: center;
+    box-shadow: -5px 0 10px rgba(0, 0, 0, 0.1);
+    color: white;
 }
 
 h2 {
     margin-bottom: 20px;
-    color: #333;
+    color: white;
+    font-size: 30px; /* Grotere tekst */
+    font-family: 'Inter', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+
 }
 
 .register-form {
-    display: flex;
-    flex-direction: column;
+    width: 100%;
+    max-width: 350px;
 }
 
 .input-group {
@@ -41,15 +56,17 @@ h2 {
 .input-group label {
     font-weight: bold;
     margin-bottom: 5px;
-    color: #555;
+    color: white;  /* Labels wit maken */
 }
 
 .input-group input {
     width: 100%;
     padding: 10px;
-    border: 1px solid #ddd;
+    border: 1px solid white; /* Witte rand voor contrast */
     border-radius: 5px;
     font-size: 16px;
+    color: white;  /* Tekst in invoervelden wit */
+    background-color: transparent;  /* Achtergrond transparant houden */
 }
 
 .submit-btn {
@@ -57,10 +74,11 @@ h2 {
     color: white;
     padding: 15px;
     border: none;
-    border-radius: 5px;
+    border-radius: 20px;
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    width: 100%; /* Knop langer maken */
 }
 
 .submit-btn:hover {
