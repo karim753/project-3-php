@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home - Twitter Clone</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<h1>Welkom bij Twitter Clone</h1>
+<a href="logout.php">Uitloggen</a>
+<h2>Plaats een nieuwe tweet</h2>
+<form action="../project-3-php/php-oefenen/tweet.php" method="POST">
+  <textarea name="content" required></textarea>
+  <button type="submit">Tweet</button>
+</form>
+<h2>Recente tweets</h2>
+<?php foreach ($tweets as $tweet): ?>
+<div>
+  <p>
+    <strong>
+      <?= htmlspecialchars($tweet['username']) ?>
+    </strong>: <?= htmlspecialchars($tweet['content']) ?>
+  </p>
+  <small><?= $tweet['created_at'] ?></small>
+</div>
+<?php endforeach; ?>
+</body>
+</html>
