@@ -2,7 +2,7 @@
 // database.php - Verbinding maken met de database
 $host = 'localhost';
 $dbname = 'twitter_clone';
-$username = 'root'; // Pas dit aan als nodig
+$username = 'root';
 $password = '';
 
 try {
