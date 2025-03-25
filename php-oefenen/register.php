@@ -1,9 +1,20 @@
 <?php
-/** @var PDO $pdo */
-require 'database.php';
-// register.php - Registratie van gebruikers
+//Verbinding maken met de database
+$host = 'localhost';
+$dbname = 'twitter_clone';
+$username = 'root';
+$password = '';
 
-// Controleren of het een POST-verzoek is
+
+try {
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password, [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+    ]);
+} catch (PDOException $e) {
+    die("Database verbinding mislukt: " . $e->getMessage());
+}
+
+// register.php - Registratie van gebruikers
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     require 'database.php';
 
@@ -13,7 +24,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $password = $_POST['password'];
 
     if (!$username || !$email || !$password) {
-        // Controleer of de vereiste velden zijn ingevuld
         die("Vul alstublieft een geldige gebruikersnaam, e-mailadres en wachtwoord in.");
     }
 
@@ -24,14 +34,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Query voorbereiden en uitvoeren
         $stmt = $pdo->prepare("INSERT INTO users (username, email, password) VALUES (?, ?, ?)");
         if ($stmt->execute([$username, $email, $hashed_password])) {
-            echo "Registratie succesvol!";
+            header("Location:tweet.html");
+            exit();
         } else {
             echo "Registratie mislukt. Probeer het opnieuw.";
         }
     } catch (PDOException $e) {
-        // Foutrapportage (Log intern voor debugging, laat aan gebruiker een melding)
         error_log("Database fout: " . $e->getMessage());
         echo "Er is een fout opgetreden. Neem contact op met de beheerder.";
     }
 }
+
 ?>
