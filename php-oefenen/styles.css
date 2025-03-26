@@ -7,69 +7,53 @@
 body {
     display: flex;
     height: 100vh;
-    background-color: #f4f4f4;
+    background-color: black;
+    color: white;
 }
 
-.left-section {
-    flex: 1.5;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.menu {
+    width: 250px;
     background-color: black;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+    height: 100vh;
+}
+
+.logo-container {
+    display: flex;
+    justify-content: flex-start;
+    padding-left: 10px;
+    margin-bottom: 10px;
 }
 
 .logo {
-    max-width: 40%;
+    width: 40px;
     height: auto;
 }
 
-.right-section {
-    flex: 1;
-    background-color: black;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 30px;
-    box-shadow: -5px 0 10px rgba(0, 0, 0, 0.1);
+.menu ul {
+    list-style: none;
+    padding-top: 10px;
+}
+
+.menu ul li {
+    padding: 10px 0;
+}
+
+.menu ul li a {
     color: white;
+    text-decoration: none;
+    font-size: 18px;
 }
 
-h2 {
-    margin-bottom: 20px;
-    color: white;
-    font-size: 30px; /* Grotere tekst */
-    font-family: 'Inter', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-
+.menu ul li a:hover {
+    color: #1DA1F2;
 }
 
-.register-form {
-    width: 100%;
-    max-width: 350px;
-}
-
-.input-group {
-    margin-bottom: 15px;
-    text-align: left;
-}
-
-.input-group label {
-    font-weight: bold;
-    margin-bottom: 5px;
-    color: white;  /* Labels wit maken */
-}
-
-.input-group input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid white; /* Witte rand voor contrast */
-    border-radius: 5px;
-    font-size: 16px;
-    color: white;  /* Tekst in invoervelden wit */
-    background-color: transparent;  /* Achtergrond transparant houden */
-}
-
-.submit-btn {
+.tweet-btn {
     background-color: #1DA1F2;
     color: white;
     padding: 15px;
@@ -78,13 +62,68 @@ h2 {
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    width: 100%; /* Knop langer maken */
+    width: 100%;
 }
 
-.submit-btn:hover {
+.tweet-btn:hover {
     background-color: #0d95e8;
 }
 
-.submit-btn:focus {
-    outline: none;
+.content {
+    flex: 1;
+    padding: 20px;
+}
+
+.tweet-form {
+    background-color: black;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.tweet-input {
+    display: flex;
+    align-items: center;
+}
+
+.profile-pic {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.tweet-form textarea {
+    width: 100%;
+    height: 100px;
+    background-color: black;
+    color: white;
+    border: 1px solid #444;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.tweet-form button {
+    background-color: #1DA1F2;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.tweet-form button:hover {
+    background-color: #0d95e8;
+}
+
+.tweet {
+    background-color: #222;
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 10px;
 }

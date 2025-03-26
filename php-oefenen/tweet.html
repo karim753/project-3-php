@@ -7,23 +7,41 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<h1>Welkom bij Twitter Clone</h1>
-<a href="logout.php">Uitloggen</a>
-<h2>Plaats een nieuwe tweet</h2>
-<form action="../project-3-php/php-oefenen/tweet.php" method="POST">
-  <textarea name="content" required></textarea>
-  <button type="submit">Tweet</button>
-</form>
-<h2>Recente tweets</h2>
-<?php foreach ($tweets as $tweet): ?>
-<div>
-  <p>
-    <strong>
-      <?= htmlspecialchars($tweet['username']) ?>
-    </strong>: <?= htmlspecialchars($tweet['content']) ?>
-  </p>
-  <small><?= $tweet['created_at'] ?></small>
+<div class="menu">
+  <div class="logo-container">
+    <img src="twitterlogo.png" alt="Logo" class="logo">
+  </div>
+  <ul>
+    <li><a href="#">Home</a></li>
+    <li><a href="#">Ontdekken</a></li>
+    <li><a href="#">Meldingen</a></li>
+    <li><a href="#">Berichten</a></li>
+    <li><a href="#">Profiel</a></li>
+  </ul>
+  <button class="tweet-btn">Tweet</button>
 </div>
-<?php endforeach; ?>
+
+<div class="content">
+  <h1> Welkom bij Twitter Clone </h1>
+  <h2>Plaats een nieuwe tweet</h2>
+  <form action="tweet.html" method="POST" class="tweet-form">
+    <div class="tweet-input">
+      <img src="blank-pfp.webp" alt="Profiel" class="profile-pic">
+      <textarea name="content" required placeholder="Wat gebeurt er?"></textarea>
+    </div>
+    <button type="submit">Tweet</button>
+  </form>
+  <h2>Recente tweets</h2>
+  <?php foreach ($tweets as $tweet): ?>
+  <div class="tweet">
+    <p>
+      <strong>
+        <?= htmlspecialchars($tweet['username']) ?>
+      </strong>: <?= htmlspecialchars($tweet['content']) ?>
+    </p>
+    <small><?= $tweet['created_at'] ?></small>
+  </div>
+  <?php endforeach; ?>
+</div>
 </body>
 </html>

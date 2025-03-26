@@ -56,7 +56,7 @@ if (!isset($_SESSION['user_id'])) {
 
 // Haal tweets op uit de database
 $stmt = $pdo->query("SELECT tweets.content, users.username, tweets.created_at FROM tweets JOIN users ON tweets.user_id = users.id ORDER BY tweets.created_at DESC");
-tweets = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$tweets = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
 
