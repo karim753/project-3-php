@@ -1,6 +1,23 @@
 <?php
+// Verbinding maken met de database
+$host = 'localhost';
+$dbname = 'twitter_clone';
+$username = 'root';
+$password = '';
+
 session_start();
 require 'database.php'; // Zorg ervoor dat $pdo juist is geïnitieerd
+
+// Controleer of de gebruiker is ingelogd
+if (!isset($_SESSION['user_id'])) {
+    header("Location: register.php"); // Verwijs naar de inlogpagina als de gebruiker niet ingelogd is
+    exit();
+}
+
+// CSRF-token genereren en opslaan in de sessie
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
 
 // Haal de tweets op uit de database
 try {
@@ -9,40 +26,44 @@ try {
                          JOIN users ON tweets.user_id = users.id 
                          ORDER BY tweets.created_at DESC");
     $tweets = $stmt->fetchAll();
+
+    // Debug: Check of tweets correct worden opgehaald
+    if (!$tweets) {
+        error_log("Geen tweets gevonden in de database.");
+    }
 } catch (PDOException $e) {
     error_log("Databasefout: " . $e->getMessage());
     $tweets = []; // Zet een lege array zodat foreach niet crasht
 }
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if (!isset($_SESSION['user_id'])) {
-        header("Location: tweet.php");
-        exit();
-    }
+// Verwerk de tweet wanneer het formulier is ingediend
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['content'])) {
+        $content = trim($_POST['content']);
+        if (empty($content)) {
+            die("Tweet mag niet leeg zijn.");
+        }
 
-    if (!isset($_POST['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
-        die("Ongeldige aanvraag.");
-    }
+        try {
+            $stmt = $pdo->prepare("INSERT INTO tweets (user_id, content, created_at) VALUES (?, ?, NOW())");
+            $stmt->execute([$_SESSION['user_id'], $content]);
 
-    $content = htmlspecialchars(trim($_POST['content']), ENT_QUOTES, 'UTF-8');
-    if (empty($content)) {
-        die("Tweet mag niet leeg zijn.");
-    }
+            // Debug: Controleer of de tweet correct is toegevoegd
+            if ($stmt->rowCount() > 0) {
+                error_log("Tweet succesvol opgeslagen.");
+            } else {
+                error_log("Tweet is niet opgeslagen.");
+            }
 
-    try {
-        $stmt = $pdo->prepare("INSERT INTO tweets (user_id, content) VALUES (?, ?)");
-        $stmt->execute([$_SESSION['user_id'], $content]);
-
-        header("Location: home.php");
-        exit();
-    } catch (PDOException $e) {
-        error_log("Databasefout: " . $e->getMessage());
-        echo "Er ging iets fout, probeer het later opnieuw.";
+            header("Location: index.php");
+            exit();
+        } catch (PDOException $e) {
+            error_log("Databasefout: " . $e->getMessage());
+            echo "Er ging iets fout, probeer het later opnieuw.";
+        }
     }
 }
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="nl">
@@ -70,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <div class="content">
     <h1> Welkom bij Twitter Clone </h1>
     <h2>Plaats een nieuwe tweet</h2>
-    <form action="tweet.php" method="POST" class="tweet-form">
+    <form action="Index.php" method="POST" class="tweet-form">
         <div class="tweet-input">
             <img src="blank-pfp.webp" alt="Profiel" class="profile-pic">
             <textarea name="content" required placeholder="Wat gebeurt er?"></textarea>
