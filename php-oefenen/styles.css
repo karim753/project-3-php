@@ -127,13 +127,7 @@ body {
     border-radius: 10px;
     margin-bottom: 10px;
 }
-/*registreer*/
-body {
-    display: flex;
-    height: 100vh;
-    margin: 0;
-    font-family: Arial, sans-serif;
-}
+
 
 .registreer-left-section {
     flex: 1;
@@ -195,4 +189,166 @@ body {
 .registreer-submit-btn:hover {
     background-color: #0d8de0;
 
+}
+/*login page*/
+.login-left-section {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: black;
+}
+
+.login-logo {
+    width: 50%; /* Vergroot het logo */
+    max-width: 300px;
+}
+
+.login-right-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.login-form {
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+}
+
+.login-input-group {
+    margin-bottom: 15px;
+}
+
+.login-label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.login-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: black;
+    color: white;
+}
+
+.login-submit-btn {
+    background-color: #1DA1F2;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.login-submit-btn:hover {
+    background-color: #0d8de0;
+}
+.register-link {
+    margin-top: 15px;
+    font-size: 14px;
+    color: white;
+}
+
+.register-link a {
+    color: #1DA1F2;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.register-link a:hover {
+    text-decoration: underline;
+}
+.login-error {
+    color: red;
+    background-color: #ffe6e6;
+    padding: 10px;
+    border: 1px solid red;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+}
+.error-message {
+    color: red;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+/* Profiel pagina */
+.profiel {
+    border-bottom: 1px solid #ccc;
+    padding: 20px;
+    text-align: center;
+}
+
+.profiel-foto {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+/*profiel bewerken*/
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    align-items: center;
+    justify-content: center;
+}
+.modal-content {
+    background-color: #1e1e1e;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 400px;
+    width: 100%;
+}
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+.bewerk-knop {
+    border-radius: 10px;
+    color: white;
+    background-color: #1DA1F2;
+    padding: 5px;
+    border: none;
+}
+.bewerk-knop:hover {
+    background-color: #0d8de0;
+}
+
+.tweets {
+    padding: 20px;
+}
+.delete-button {
+    background: none;
+    border: none;
+    color: #888;
+    cursor: pointer;
+    font-size: 18px;
+    margin-left: 10px;
+    transition: color 0.2s;
+}
+
+.delete-button:hover {
+    color: #c43231;
 }

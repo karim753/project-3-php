@@ -5,6 +5,9 @@ $dbname = 'twitter_clone';
 $username = 'root';
 $password = '';
 
+$error = '';
+$error2 = null;
+
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password, [
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
@@ -21,32 +24,34 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $password = $_POST['password'];
 
     if (!$username || !$email || !$password) {
-        die("Vul alstublieft een geldige gebruikersnaam, e-mailadres en wachtwoord in.");
-    }
+        $error = "Vul alstublieft een geldige gebruikersnaam, e-mailadres en wachtwoord in.";
+    } else {
+        // Gehashte wachtwoord maken
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-    // Gehashte wachtwoord maken
-    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+        try {
+            // Query voorbereiden en uitvoeren (met is_admin standaard op 0)
+            $stmt = $pdo->prepare("INSERT INTO users (username, email, password, is_admin) VALUES (?, ?, ?, 0)");
+            if ($stmt->execute([$username, $email, $hashed_password])) {
+                // Haal de laatst ingevoegde gebruiker op (om in te loggen)
+                $user_id = $pdo->lastInsertId();
 
-    try {
-        // Query voorbereiden en uitvoeren
-        $stmt = $pdo->prepare("INSERT INTO users (username, email, password) VALUES (?, ?, ?)");
-        if ($stmt->execute([$username, $email, $hashed_password])) {
-            // Haal de laatst ingevoegde gebruiker op (om in te loggen)
-            $user_id = $pdo->lastInsertId();
+                // Start sessie en stel user_id in voor inloggen
+                session_start();
+                $_SESSION['user_id'] = $user_id;
+                $_SESSION['username'] = $username;
+                $_SESSION['is_admin'] = 0; // ✅ Standaard geen admin
 
-            // Start sessie en stel user_id in voor inloggen
-            session_start();
-            $_SESSION['user_id'] = $user_id;
-
-            // Redirect naar index.php na registratie en inloggen
-            header("Location: Index.php");
-            exit(); // Zorg ervoor dat het script stopt na de redirect
-        } else {
-            echo "Registratie mislukt. Probeer het opnieuw.";
+                // Redirect naar index.php na registratie en inloggen
+                header("Location: index.php");
+                exit(); // Zorg ervoor dat het script stopt na de redirect
+            } else {
+                echo "Registratie mislukt. Probeer het opnieuw.";
+            }
+        } catch (PDOException $e) {
+            error_log("Database fout: " . $e->getMessage());
+            $error2 = "Deze e-mail/gebruikersnaam is al in gebruik";
         }
-    } catch (PDOException $e) {
-        error_log("Database fout: " . $e->getMessage());
-        echo "Er is een fout opgetreden. Neem contact op met de beheerder.";
     }
 }
 ?>
@@ -65,6 +70,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </div>
 <div class="registreer-right-section">
     <h2>Nu registreren</h2>
+    <?php if (!empty($error)): ?>
+        <div class="error-message">
+            <?= htmlspecialchars($error) ?>
+        </div>
+    <?php endif; ?>
+    <?php if ($error2) echo $error2; ?>
+
     <form action="register.php" method="POST" class="registreer-form">
         <div class="registreer-input-group">
             <label for="username" class="registreer-label">Gebruikersnaam:</label>
@@ -80,7 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
         <button type="submit" class="registreer-submit-btn">Account aanmaken</button>
     </form>
+    <p class="register-link">Heb je al een account? <a href="login.php">Inloggen</a></p>
 </div>
 </body>
 </html>
-
