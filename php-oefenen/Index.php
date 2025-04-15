@@ -1,9 +1,4 @@
 <?php
-$host = 'localhost';
-$dbname = 'twitter_clone';
-$username = 'root';
-$password = '';
-
 session_start();
 require 'database.php';
 
@@ -12,18 +7,7 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-//pdo definen
-try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password, [
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-    ]);
-    // Optioneel: log als de verbinding succesvol is
-    // error_log("Databaseverbinding succesvol!");
-} catch (PDOException $e) {
-    error_log("Database verbinding mislukt: " . $e->getMessage());  // Log de foutmelding
-    die("Database verbinding mislukt: " . $e->getMessage());
-}
-// Haal admin-status op
+// Haal admin-status
 $stmt = $pdo->prepare("SELECT id, username, is_admin FROM users WHERE id = ?");
 $stmt->execute([$_SESSION['user_id']]);
 $currentUser = $stmt->fetch();

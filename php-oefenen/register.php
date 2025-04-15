@@ -1,21 +1,5 @@
 <?php
-// Verbinding maken met de database
-$host = 'localhost';
-$dbname = 'twitter_clone';
-$username = 'root';
-$password = '';
-
-$error = '';
-$error2 = null;
-
-try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password, [
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-    ]);
-} catch (PDOException $e) {
-    die("Database verbinding mislukt: " . $e->getMessage());
-}
-
+require 'database.php';
 // register.php - Registratie van gebruikers
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Input validatie
@@ -40,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 session_start();
                 $_SESSION['user_id'] = $user_id;
                 $_SESSION['username'] = $username;
-                $_SESSION['is_admin'] = 0; // ✅ Standaard geen admin
+                $_SESSION['is_admin'] = 0; //  Standaard geen admin
 
                 // Redirect naar index.php na registratie en inloggen
                 header("Location: index.php");

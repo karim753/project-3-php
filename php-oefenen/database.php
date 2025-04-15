@@ -12,4 +12,4 @@ try {
 } catch (PDOException $e) {
     die("Database verbinding mislukt: " . $e->getMessage());
 }
-?>
+

@@ -1,21 +1,8 @@
 <?php
-// Verbinding maken met de database
-$host = 'localhost';
-$dbname = 'twitter_clone';
-$username = 'root';
-$password = '';
-
+require "database.php";
 $error = null; // Foutmelding standaard op null
 
-try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password, [
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-    ]);
-} catch (PDOException $e) {
-    die("Database verbinding mislukt: " . $e->getMessage());
-}
-
-// login.php - Inloggen van gebruikers
+// Inloggen van
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $login = trim($_POST['login']); // Kan een e-mail of gebruikersnaam zijn
     $password = $_POST['password'];
@@ -24,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $error = '<div class="login-error">Vul alstublieft een geldige gebruikersnaam/e-mail en wachtwoord in.</div>';
     } else {
         try {
-            // Query om te zoeken naar de gebruiker op gebruikersnaam of e-mail
+            // Query om te zoeken naar de gebruiker op gebruikersnaam of email
             $stmt = $pdo->prepare("SELECT id, username, password, is_admin FROM users WHERE username = ? OR email = ?");
             $stmt->execute([$login, $login]);
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -33,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 session_start();
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['username'] = $user['username'];
-                $_SESSION['is_admin'] = $user['is_admin']; // ✅ Adminstatus opslaan in sessie
+                $_SESSION['is_admin'] = $user['is_admin']; //Adminstatus opslaan in s
 
                 header("Location: index.php");
                 exit();

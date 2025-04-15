@@ -1,29 +1,13 @@
 <?php
-$host = 'localhost';
-$dbname = 'twitter_clone';
-$username = 'root';
-$password = '';
-
 session_start();
 require 'database.php';
-//pdo definen
-try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password, [
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-    ]);
-    // Optioneel: log als de verbinding succesvol is
-    // error_log("Databaseverbinding succesvol!");
-} catch (PDOException $e) {
-    error_log("Database verbinding mislukt: " . $e->getMessage());  // Log de foutmelding
-    die("Database verbinding mislukt: " . $e->getMessage());
-}
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: register.php");
     exit();
 }
 
-// CSRF-token genereren
+// CSRF-token maken
 if (empty($_SESSION['csrf_token'])) {
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
@@ -33,13 +17,13 @@ $viewed_user_id = isset($_GET['id']) ? intval($_GET['id']) : $_SESSION['user_id'
 $is_own_profile = $viewed_user_id === $_SESSION['user_id'];
 $is_admin = $_SESSION['is_admin'] ?? false; // Zorg dat 'is_admin' bij login wordt gezet
 
-// POST-logica
+// Als het CSRF-token ontbreekt of niet goed is stop dan het script dit is  een aanval.
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
         die("Ongeldige CSRF-token.");
     }
 
-    // Profiel bijwerken (alleen voor eigen profiel)
+    // Profiel bijwerken alleen eigen profiel)
     if ($is_own_profile && isset($_POST['update_profile'])) {
         $newUsername = trim($_POST['username']);
         $newBio = trim($_POST['bio']);
@@ -52,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    // Tweet liken / unliken
+    // Tweet liken  unliken
     if (isset($_POST['tweet_id'])) {
         $tweetId = $_POST['tweet_id'];
         $userId = $_SESSION['user_id'];
@@ -73,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
 
-    // Tweet verwijderen (alleen voor eigen profiel)
+    // Tweet verwijderen alleen eigen profiel
     if ($is_own_profile && isset($_POST['delete_tweet']) && isset($_POST['created_at'])) {
         try {
             $stmt = $pdo->prepare("DELETE FROM tweets WHERE user_id = ? AND created_at = ?");
